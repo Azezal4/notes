@@ -1,0 +1,30 @@
+
+* Logical Volume Management (LVM)
+Uses physical volumes(PV), volume groups(VG) and logical volumes (LV) to configure storage
+
+** Looking for the volumes
+#+begin_src bash
+  #! /usr/bin/bash
+  lsblk
+#+end_src
+
+#+RESULTS:
+| NAME        | MAJ:MIN | RM | SIZE   | RO | TYPE | MOUNTPOINTS |
+| sda         |     8:0 |  1 | 14.6G  |  0 | disk |             |
+| sdb         |    8:16 |  1 | 14.6G  |  0 | disk |             |
+| nvme0n1     |   259:0 |  0 | 238.5G |  0 | disk |             |
+| ├─nvme0n1p1 |   259:1 |  0 | 512M   |  0 | part | /boot/EFI   |
+| └─nvme0n1p2 |   259:2 |  0 | 238G   |  0 | part | /           |
+
+Note, that both of the files have a GPT partition method and since this is a practice, it is still blank.
+If one has a single physical drive, it is ususally recommended to create a partition for mapping the logical volume.
+The figure below might give me a rough idea on what to do.
+
+#+DOWNLOADED: https://www.ibm.com/docs/en/SSNAQ8_10.1.0/com.ibm.cics.tx.doc/concepts/plog.gif @ 2025-08-12 22:07:39
+[[file:Logical_Volume_Management_(LVM)/2025-08-12_22-07-39_plog.gif]]
+
+** Now we have to create a partition inside a disk using fdisk and write the change.
+
+To create a new physical volume that is already a partition, we can use ~pvcreate /dev/volume~ command.
+In order to place this physical volume in a LVM(logical volume manager)
+make sure the partition is backed up as the datas might be earsed.
