@@ -48,3 +48,4 @@ For that, ~fdisk /dev/sdb1~ Now create a partition and add the partition to a vo
 
 * Extending a logical volume
 
+It is kinda easy, as introduce any physical vol as ~pvcreate /dev/sdb1~ then use the command ~vgextend /dev/<group> /dev/sda1 ~
