@@ -28,3 +28,23 @@ The figure below might give me a rough idea on what to do.
 To create a new physical volume that is already a partition, we can use ~pvcreate /dev/volume~ command.
 In order to place this physical volume in a LVM(logical volume manager)
 make sure the partition is backed up as the datas might be earsed.
+
+** Why the need to create a logical volume?
+ -
+   In LVM, all the total size of the disk is treated as one, so maintaining it via a group or a user is much easier.
+   Can act like RAID, but is much more simpler than setting up.
+
+Consider we need a storage space that could be mounted and worked independently, but unfortunately all we have is a physical device.
+if the physical device is as:
+~/dev/sdb~, we can format it and make a single partition as we need only one for example i.e ~/dev/sdb1~.
+For that, ~fdisk /dev/sdb1~ Now create a partition and add the partition to a volume group.
+#+begin_src bash
+  #! /usr/bin/bash
+  pvcreate /dev/sdb1
+  vgcreate any-group-name /dev/sdb1 # any-goroup-name is a name choice for user
+  # pvdisplay to view the total PE and allocate according to your needs
+  lvcreate -l 3344 <groupname> <logical_vol_name> # it helps in creating a logical volume that we can mount and use anywhere
+#+end_src
+
+* Extending a logical volume
+
